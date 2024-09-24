@@ -1,0 +1,23 @@
+% Define vowels
+vowel(a).
+vowel(e).
+vowel(i).
+vowel(o).
+vowel(u).
+
+% Base case: if the list is empty, the count is 0
+count_vowels([], 0).
+
+% Recursive case: if the head of the list is a vowel, increment the count
+count_vowels([Head|Tail], Count) :-
+    vowel(Head),
+    count_vowels(Tail, TailCount),
+    Count is TailCount + 1.
+
+% Recursive case: if the head of the list is not a vowel, do not increment the count
+count_vowels([Head|Tail], Count) :-
+    \+ vowel(Head), % the head is not a vowel
+    count_vowels(Tail, Count).
+
+% Example query:
+% ?- count_vowels([h,e,l,l,o], Count).
