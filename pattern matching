@@ -1,0 +1,34 @@
+% Base case: an empty list matches an empty list.
+match([], []).
+
+% If both heads of the lists are the same, recursively match the rest of the lists.
+match([H1|T1], [H1|T2]) :-
+    match(T1, T2), !.  % Cut to prevent backtracking.
+
+% If the first elements are not the same, fail.
+match([H1|_], [H2|_]) :-
+    H1 \= H2, !, false.
+
+% If the second list contains variables (like _), they can match anything.
+match([_|T1], [_|T2]) :-
+    match(T1, T2).
+
+% Predicate to match a structure with patterns
+match_structure(X, structure(X, Y, Z)) :-
+    write('Pattern matched: '), nl,
+    write('X = '), write(X), nl,
+    write('Y = '), write(Y), nl,
+    write('Z = '), write(Z), nl, !.
+
+% If the structure does not match, print false.
+match_structure(_, _) :- false.
+
+% Example Queries:
+% ?- yy        % true.
+% ?- match([1, 2, 3], [1, 2, _]).        % true.
+% ?- match([1, 2, 3], [1, 2, 4]).        % false.
+% ?- match([a, b, c], [a, X, c]).        % true, X = b.
+% ?- match_structure(hello, structure(hello, world, test)). 
+% Outputs: Pattern matched: X = hello, Y = world, Z = test.
+% ?- match_structure(hello, structure(world, hello, test)). 
+% false.
